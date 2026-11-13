@@ -2,7 +2,7 @@
 
 140 craftable melee weapons, covering 20 designs in wood, stone, iron, gold, copper, diamond, and netherite. The arsenal uses hand-authored 16×16 textures for compact weapons and 32×32 textures for long blades and polearms, with Minecraft handheld item models. Combat timing varies by weapon, from quick daggers to slow heavy attacks with a windup.
 
-The content and Rust combat code are packaged together in [dist/combat_overhaul-0.1.1.hmod](dist/combat_overhaul-0.1.1.hmod). The separate `-content.hmod` contains the arsenal alone. Install the combined package for the combat overhaul.
+The mod requires its native combat code and its weapon content. When importing this GitHub repository in Horizon Launcher, follow the installation steps below to install both parts. A combined archive is also available in [dist/combat_overhaul-0.1.1.hmod](dist/combat_overhaul-0.1.1.hmod).
 
 ## Controls
 
@@ -13,6 +13,17 @@ Each hand has its own cooldown. The initial balance uses 85% damage for offhand 
 Craft wood through diamond weapons using material ingredients and sticks. Upgrade each diamond weapon to netherite at a smithing table with a netherite upgrade template and netherite ingot. The creative inventory includes a Combat Overhaul tab. The full roster and balance values are in `design/weapons.json`, with a preview in `design/weapon-preview.png`.
 
 ## Build and install
+
+### Install through Horizon Launcher's GitHub import
+
+1. Import this repository in the launcher's native Mods page and build the selected instance.
+2. Download [combat_overhaul-0.1.1-content.hmod](https://github.com/Dysclarity/Horizon-combat-overhaul/raw/refs/heads/main/dist/combat_overhaul-0.1.1-content.hmod).
+3. Place that file in the selected instance's `horizon-mods` folder. For the default Windows instance, this is `%APPDATA%\horizon\horizon-mods`.
+4. Enable Combat Overhaul in **Options → Mods** and fully restart the game. The weapons appear in the **Combat Overhaul** creative tab and have survival crafting recipes.
+
+The launcher's GitHub repository importer packages the Rust bundle into an `.hnmod`. The companion content package supplies the 140 item definitions, textures, models, recipes, and creative tab. If the build succeeds but the items are missing, check that this companion package is installed and enabled in the instance being played. Replacing the content package takes effect after a full restart.
+
+### Build from source
 
 This mod pins Horizon revision `36eb98b6f6ec4f22649cbe65bbfd32bc0dc2083f` and horizon-mixins revision `5a64af938ec86b00d53d16a408aabc0038fb3e57`. Its integration accesses server combat internals, so use this exact source revision. Existing older Horizon installations need a native build at the pinned revision.
 
@@ -28,11 +39,11 @@ python tools/package.py
 
 `build_native.ps1 -Build` also builds the modded executable. Source checkouts and compilation output stay under `native/`. The mod's generated mixin bundle is `native/mixins/combat_overhaul`.
 
-The launcher accepts the combined `.hmod` as a native mod and compiles it for the selected instance. Enable the matching content in the game and restart to load its registry entries. A source build can instead load `content/` with `--dev-mod` and your prepared Minecraft resources with `--resources`.
+A source build can load `content/` with `--dev-mod` and your prepared Minecraft resources with `--resources`. To test the installed content path, use the separate content package in the game's `horizon-mods` folder and enable it before starting the game.
 
 ## Multiplayer
 
-Every player and the host need the same combined package and modded Horizon build. Horizon's current source supports matching custom registries over LAN and dedicated servers. The server checks the equipped hand, weapon eligibility, cooldown, target range, and obstruction before passing a hit through Horizon's normal combat handling. The client sends the hand to attack with.
+Every player and the host need matching native code, content packages, and modded Horizon builds. Horizon's current source supports matching custom registries over LAN and dedicated servers. The server checks the equipped hand, weapon eligibility, cooldown, target range, and obstruction before passing a hit through Horizon's normal combat handling. The client sends the hand to attack with.
 
 For a dedicated server, Horizon's launcher can export the native engine using `native-build <bundle> --server-output <new-directory> --version <installed-base-tag>`, with its native-code trust confirmation. Configure the supervisor's `engine.path` to the exported engine. Keep the matching content enabled on the server and all clients. Source and base-version compatibility must match the pinned revision.
 
@@ -43,6 +54,10 @@ For a dedicated server, Horizon's launcher can export the native engine using `n
 The native runtime source is generated from `native/core.rs`, `native/runtime_body.rs`, `native/remote_animation_body.rs`, and `design/weapons.json` by `native/tools/generate.py`. Edit those inputs before regenerating. The source pin and build script keep engine integration reproducible.
 
 `tools/smoke_multiplayer.py` runs two isolated clients against an integrated LAN server. Supply `--client` with the compiled modded executable, `--ctl` with Horizon's control executable, and `--resources` with prepared Minecraft 26.3 resources. It copies those resources into its test output folder and creates disposable worlds.
+
+Add `--installed-content dist/combat_overhaul-0.1.1-content.hmod` to exercise normal package discovery and enablement in each client's `horizon-mods` folder. The default development mode passes `--dev-mod content/`. Both modes assert that the test weapons exist in the equipped inventory before capturing them.
+
+The installed-content check passed with the launcher-built native client: both LAN clients loaded 1,798 items (1,658 base items plus all 140 weapons), equipped the custom main-hand and offhand weapons, and captured their rendered models.
 
 A two-player LAN test verified synchronization of all seven material tiers, main-hand damage of 4 health points with a wooden arming sword, offhand damage of 2.55 with a wooden dagger, and zero offhand damage with PvP disabled. Both the host and joining player passed the attack checks. Additional checks passed for offhand durability, preserving the main-hand stack, rapid-click cooldowns, wall obstruction, rebinding both attacks through the UI, and disabling the old binding. The pinned native executable compiled successfully and both packages passed Horizon's official validator. Dedicated-server export has build instructions above, with live multiplayer validation performed over LAN.
 

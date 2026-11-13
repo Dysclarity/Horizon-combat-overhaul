@@ -64,6 +64,9 @@ def visual_check(host, guest, out, main="mouse left click", off="mouse right cli
         game("options_set", key="chatVisibility", value="2")
         game("options_set", key="tutorialStep", value="none")
     guest.wait(40)
+    equipped = guest("status")
+    assert (equipped.get("held") or {}).get("item") == "combat_overhaul:iron_greatsword", equipped
+    assert (equipped.get("offhand") or {}).get("item") == "combat_overhaul:iron_club", equipped
     host.raw("look-at", x + 4.5, y + 0.9, z)
     guest.raw("look-at", x, y + 1.4, z)
     host.shot(out, "third-person-rest")
@@ -174,10 +177,14 @@ def main():
     parser.add_argument("--source", type=Path, default=ROOT / "native/.horizon-source")
     parser.add_argument("--out", type=Path, default=ROOT / "target/multiplayer-smoke")
     parser.add_argument("--visual-only", action="store_true", help="recapture animation views without repeating combat assertions")
+    parser.add_argument("--installed-content", type=Path,
+                        help="load this content .hmod through the normal mods folder")
     args = parser.parse_args()
     for binary in (args.client, args.ctl):
         if not binary.is_file():
             parser.error(f"missing executable {binary}")
+    if args.installed_content and not args.installed_content.is_file():
+        parser.error(f"missing content package {args.installed_content}")
     for report in ("horizon-resources.json", "registries.json", "commands.json"):
         if not (args.resources / report).is_file():
             parser.error(f"missing prepared resource {report}")
@@ -202,7 +209,15 @@ def main():
     def raw(game, *words):
         if words and words[0] == "launch":
             words = (*words, "--game", str(args.client.resolve()),
-                     "--resources", str(resources), "--dev-mod", str(ROOT / "content"))
+                     "--resources", str(resources))
+            if args.installed_content:
+                home = Path(game.d.env["HORIZON_HOME"])
+                mods = home / "horizon-mods"
+                mods.mkdir(exist_ok=True)
+                shutil.copyfile(args.installed_content, mods / args.installed_content.name)
+                (home / "horizon-mods.txt").write_text("mod.combat_overhaul:true\n")
+            else:
+                words = (*words, "--dev-mod", str(ROOT / "content"))
         return original_raw(game, *words)
 
     lan_e2e.Game.raw = raw

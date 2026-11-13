@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " M ",
+    "MMM",
+    " S "
+  ],
+  "key": {
+    "M": "minecraft:cobblestone",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "combat_overhaul:stone_arming_sword",
+    "count": 1
+  }
+}

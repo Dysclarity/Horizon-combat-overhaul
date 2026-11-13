@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " MM",
+    " S ",
+    "S  "
+  ],
+  "key": {
+    "M": "#minecraft:planks",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "combat_overhaul:wood_pike",
+    "count": 1
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "template": "minecraft:wooden_sword",
+  "max_stack_size": 1,
+  "components": {
+    "minecraft:max_damage": 59,
+    "minecraft:attack_range": {
+      "min_reach": 0.0,
+      "max_reach": 3.8,
+      "min_creative_reach": 0.0,
+      "max_creative_reach": 5.8,
+      "hitbox_margin": 0.0
+    },
+    "minecraft:attribute_modifiers": [
+      {
+        "type": "minecraft:attack_damage",
+        "id": "minecraft:base_attack_damage",
+        "amount": 3.5,
+        "operation": "add_value",
+        "slot": "mainhand"
+      },
+      {
+        "type": "minecraft:attack_speed",
+        "id": "minecraft:base_attack_speed",
+        "amount": -2.95,
+        "operation": "add_value",
+        "slot": "mainhand"
+      }
+    ]
+  }
+}

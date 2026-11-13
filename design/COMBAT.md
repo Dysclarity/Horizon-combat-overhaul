@@ -1,0 +1,17 @@
+# Combat design
+
+The roster contains 20 weapon designs in each of seven materials, producing 140 item variants. `weapons.json` is the shared input for content generation and combat code. Item identifiers follow `combat_overhaul:<material>_<weapon>`.
+
+The requested pacing is deliberate. Daggers attack up to 2.5 times per second, while battleaxes attack at 0.7 and warhammers at 0.6. Damage, cooldown, reach, and visibly different windups establish each weapon's role. Damage values represent the total damage of a full-strength unarmored hit in health points. Material damage bonuses are additive. A weapon's speed and reach stay consistent across materials.
+
+Daggers, short swords, rapiers, cutlasses, clubs, and sickles support offhand attacks. Offhand damage uses 85% of the normal value. Both hands track their own cooldown, with a shared 0.2-second minimum gap between accepted attacks to prevent simultaneous burst hits. A rejected attack produces no damage and does not start a new swing. Heavy main-hand weapons allow an eligible small offhand weapon because no two-handed restriction was requested.
+
+Default attack bindings are left mouse for the main hand and right mouse for the offhand. Both bindings are configurable. Offhand attack handling should consume a use input only when a recognized eligible offhand weapon is equipped and gameplay input is active. Ordinary block interaction and item use remain available in other cases. Closing a screen or changing equipment must clear held input to avoid unintended repeat attacks.
+
+Each archetype has four animation keyframes covering ready, windup, impact, and recovery. The duration comes from the weapon's attack speed. Each material variant uses its archetype's motion. Coordinates describe relative transforms from the vanilla held pose. The left hand mirrors horizontal translation and yaw/roll. Animations return to the original pose at normalized time 1. Attacks must use the selected hand's item and animation.
+
+Multiplayer is required. Authoritative combat must run on the server with the same mod and item definitions. The server must verify equipped hand, weapon identity, cooldown, target reach, and line of sight before applying damage and durability. Swing animation replication must identify the attacking hand and weapon. The pinned Horizon source at `36eb98b6f6ec4f22649cbe65bbfd32bc0dc2083f` supports matching content mods over LAN and on dedicated servers. Both the server and joining clients must install the same content definitions and native bundle. Multiplayer acceptance still requires an actual connection test covering custom item synchronization, attacks, damage, and animation visibility.
+
+Every non-netherite variant has a shaped recipe using its material and sticks. Recipe shapes are unique even after trimming empty rows/columns and mirroring. Netherite variants use the corresponding diamond weapon, a netherite ingot, and the vanilla netherite upgrade smithing template. Item silhouettes should use Minecraft-style pixel art, crisp edges, small palettes, wooden grips, and recognizable differences between archetypes.
+
+Acceptance includes all 140 items with names, models, recipes, and material durability; fast and slow weapon timing; valid offhand attacks and unsupported offhand items; rebinding and conflicting bindings; both first-person hands; another player's visible swings; damage verified by the server; reconnects; slot changes during recovery; and mod disable behavior.

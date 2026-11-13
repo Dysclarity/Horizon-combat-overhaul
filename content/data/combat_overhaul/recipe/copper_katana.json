@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  M",
+    " M ",
+    "SS "
+  ],
+  "key": {
+    "M": "minecraft:copper_ingot",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "combat_overhaul:copper_katana",
+    "count": 1
+  }
+}

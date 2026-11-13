@@ -1,0 +1,8 @@
+id = "combat_overhaul"
+name = "Combat Overhaul Arsenal"
+version = "0.1.0"
+description = "140 craftable weapons across seven material tiers."
+authors = ["Horizon Combat Overhaul contributors"]
+api = "0.2"
+side = "both"
+capabilities = ["registries"]

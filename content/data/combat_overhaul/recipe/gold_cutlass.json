@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " MM",
+    " M ",
+    " SM"
+  ],
+  "key": {
+    "M": "minecraft:gold_ingot",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "combat_overhaul:gold_cutlass",
+    "count": 1
+  }
+}

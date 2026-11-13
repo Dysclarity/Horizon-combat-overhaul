@@ -16,7 +16,7 @@ for w in data["weapons"]:
 pin = "36eb98b6f6ec4f22649cbe65bbfd32bc0dc2083f"
 manifest = f'''[mod]
 id = "combat_overhaul"
-version = "0.1.0"
+version = "0.1.1"
 priority = 100
 [compatibility]
 horizon_revision = "{pin}"
@@ -39,7 +39,7 @@ hooks = [
     ("interaction_key", [readonly, ("button", "i32", "button"), ("swing", "&mut bool", "&mut *swing_hand"), ("canceled", "&mut bool", "&mut *canceled")], "m::interaction(game, button, swing, canceled);"),
     ("attack_entity", [readonly, ("canceled", "&mut bool", "&mut *canceled")], "m::guard(game, canceled);"),
     ("render_hand_pose", [readonly, ("hand", "horizon_client::first_person::Hand", "hand"), ("stack", "Option<&horizon_client::items::ItemStack>", "stack")] + [(k, "&mut f32", "&mut *"+k) for k in ["pitch","yaw","roll","x","y","z"]], "m::render(game, hand, stack, [pitch, yaw, roll, x, y, z]);"),
-    ("mods", [("mods", "&mut Vec<crate::game::native_hooks::NativeMod>", "&mut *mods")], '''mods.push(crate::game::native_hooks::NativeMod { id: "combat_overhaul".into(), title: "Combat Overhaul 0.1.0".into(), description: "Deliberate combat and independent weapon hands. Requires Combat Overhaul on the server.".into(), keys: vec![["main_attack".into(), "Main-hand attack".into(), "key.mouse.left".into()], ["off_attack".into(), "Off-hand attack".into(), "key.mouse.right".into()]] });'''),
+    ("mods", [("mods", "&mut Vec<crate::game::native_hooks::NativeMod>", "&mut *mods")], '''mods.push(crate::game::native_hooks::NativeMod { id: "combat_overhaul".into(), title: "Combat Overhaul 0.1.1".into(), description: "Deliberate combat and independent weapon hands. Requires Combat Overhaul on the server.".into(), keys: vec![["main_attack".into(), "Main-hand attack".into(), "key.mouse.left".into()], ["off_attack".into(), "Off-hand attack".into(), "key.mouse.right".into()]] });'''),
 ]
 for name, bindings, body in hooks:
     args = ", ".join(f"{n}: {t}" for n,t,v in bindings)

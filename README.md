@@ -1,8 +1,8 @@
 # Combat Overhaul for Horizon
 
-140 craftable melee weapons, covering 20 designs in wood, stone, iron, gold, copper, diamond, and netherite. The arsenal uses original 16×16 pixel textures and Minecraft handheld item models. Combat timing varies by weapon, from quick daggers to slow heavy attacks with a windup.
+140 craftable melee weapons, covering 20 designs in wood, stone, iron, gold, copper, diamond, and netherite. The arsenal uses hand-authored 16×16 textures for compact weapons and 32×32 textures for long blades and polearms, with Minecraft handheld item models. Combat timing varies by weapon, from quick daggers to slow heavy attacks with a windup.
 
-The content and Rust combat code are packaged together in [dist/combat_overhaul-0.1.0.hmod](dist/combat_overhaul-0.1.0.hmod). The separate `-content.hmod` contains the arsenal alone. Install the combined package for the combat overhaul.
+The content and Rust combat code are packaged together in [dist/combat_overhaul-0.1.1.hmod](dist/combat_overhaul-0.1.1.hmod). The separate `-content.hmod` contains the arsenal alone. Install the combined package for the combat overhaul.
 
 ## Controls
 

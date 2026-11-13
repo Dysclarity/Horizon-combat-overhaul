@@ -14,6 +14,8 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 RESOURCE_ID = re.compile(r"[a-z0-9_.-]+:[a-z0-9_./-]+\Z")
+LARGE_WEAPONS = {"longsword", "greatsword", "rapier", "estoc", "katana",
+                 "spear", "pike", "halberd", "glaive", "battleaxe"}
 
 
 def require(condition, message):
@@ -136,8 +138,9 @@ def validate(content, design):
                             for key in ["rotation", "translation", "scale"]) and
                         all(v > 0 for v in transform["scale"]), f"{item}: invalid {view} transform")
             with Image.open(assets / "textures/item" / f"{item}.png") as texture:
-                require(texture.format == "PNG" and texture.size == (16, 16) and texture.mode == "RGBA",
-                        f"{item}: expected a 16x16 RGBA PNG")
+                size = 32 if weapon["id"] in LARGE_WEAPONS else 16
+                require(texture.format == "PNG" and texture.size == (size, size) and texture.mode == "RGBA",
+                        f"{item}: expected a {size}x{size} RGBA PNG")
                 texture.load()
                 require(set(texture.getchannel("A").tobytes()) == {0, 255},
                         f"{item}: texture must contain transparent space and crisp opaque pixels")

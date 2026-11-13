@@ -1,6 +1,6 @@
 [mod]
 id = "combat_overhaul"
-version = "0.1.0"
+version = "0.1.1"
 priority = 100
 [compatibility]
 horizon_revision = "36eb98b6f6ec4f22649cbe65bbfd32bc0dc2083f"
